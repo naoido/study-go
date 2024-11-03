@@ -31,18 +31,16 @@ func NewMyServer() *MyServer {
 func main() {
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", PORT))
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to listen %v", err)
 	}
 
-	s := grpc.NewServer()
-
-	hellopb.RegisterGrpcServiceServer(s, NewMyServer())
-
-	reflection.Register(s)
+	server := grpc.NewServer()
+	hellopb.RegisterGrpcServiceServer(server, NewMyServer())
+	reflection.Register(server)
 
 	go func() {
 		log.Printf("start gRPC server port: %v", PORT)
-		err := s.Serve(listener)
+		err := server.Serve(listener)
 		if err != nil {
 			return
 		}
@@ -52,7 +50,7 @@ func main() {
 	signal.Notify(quit, os.Interrupt)
 	<-quit
 	log.Println("stopping gRPC server...")
-	s.GracefulStop()
+	server.GracefulStop()
 }
 
 type MyServer struct {

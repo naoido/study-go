@@ -2,5 +2,4 @@
 gRPCサーバーを作成してみてます。
 以下リポジトリのプラクティスに従い構成しています。
 <br>
-<br>
-@[golang-standards](https://github.com/golang-standards/project-template)
+> [golang-standards](https://github.com/golang-standards/project-template)
